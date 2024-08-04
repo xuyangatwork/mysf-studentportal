@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 # Connect to SQLite database (or create it if it doesn't exist)
 def connect_db(db_name="prompts.db"):
@@ -29,13 +30,13 @@ def upsert_prompt(conn, prompt_detail):
                 UPDATE prompt_table
                 SET date = ?, prompt_detail = ?
                 WHERE id = ?
-            ''', (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), prompt_detail, record[0]))
+            ''', (get_singapore_time(), prompt_detail, record[0]))
         else:
             # Insert a new record
             conn.execute('''
                 INSERT INTO prompt_table (date, prompt_detail)
                 VALUES (?, ?)
-            ''', (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), prompt_detail))
+            ''', (get_singapore_time(), prompt_detail))
 
 # Read the single record
 def read_prompt(conn):
@@ -43,3 +44,10 @@ def read_prompt(conn):
         cursor = conn.execute('SELECT id, date, prompt_detail FROM prompt_table LIMIT 1')
         record = cursor.fetchone()
         return record if record else None
+    
+# Function to get current time in Singapore timezone
+def get_singapore_time():
+    utc_time = datetime.utcnow().replace(tzinfo=ZoneInfo('UTC'))
+    singapore_time = utc_time.astimezone(ZoneInfo('Asia/Singapore'))
+    return singapore_time.strftime("%Y-%m-%d %H:%M:%S")
+
