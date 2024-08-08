@@ -31,7 +31,7 @@ def single_openai_call(inputs):
         # defaults to os.environ.get("OPENAI_API_KEY")
         api_key = st.secrets["OPENAI_API_KEY"])
 
-    prompt = "My RIASEC: " + inputs['riasec'] + "; My Career Aspirations: " + inputs['job'] + "; My Goal: " + inputs['goal']
+    prompt = "My RIASEC: " + inputs['riasec'] + "; My Career Aspirations: " + inputs['industry'] + "; My Goal: " + inputs['goal']
     if inputs['ownGoal'] != "":
         prompt = prompt + inputs['ownGoal']
 

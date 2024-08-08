@@ -4,6 +4,25 @@ import json
 import sqlit_db
 
 riasec_options = ["R", "I", "A", "S", "E", "C"]
+
+riasec_industries = {
+    "R": ["Aerospace", "Built Environment", "Environmental Services", "Energy and Chemicals", 
+                  "Food Services", "Logistics", "Landscape", "Marine and Offshore Engineering", 
+                  "Precision Engineering", "Public Transport", "Security"],
+    "I": ["Architecture", "Healthcare", "Biopharmaceuticals Manufacturing", "Electronics", 
+                      "Energy and Chemicals", "Energy and Power", "Information and Communications Technology", 
+                      "Marine and Offshore Engineering", "Precision Engineering"],
+    "A": ["Advertising", "Architecture", "Arts and Entertainment", "Beauty Services", "Design", 
+                 "Landscape", "Media"],
+    "S": ["Early Childhood care and education", "Healthcare", "Human Resource", 
+               "Public Service (Education)", "Social Service", "Training and Adult Education"],
+    "E": ["Advertising", "Air Transport", "Consultancy", "Design", "Finance", 
+                     "Hotel and Accommodation Services", "Human Resource", "Legal", "Media", 
+                     "Public Service (Education)", "Real Estate", "Retail", "Tourism"],
+    "C": ["Aerospace", "Accountancy", "Air Transport", "Finance", "Food Manufacturing", 
+                     "Information and Communications", "Insurance", "Legal", "Logistics", 
+                     "Real Estate", "Sea Transport", "Wholesale Trade"]}
+
 goal_options = ["Strengthen sustainable food production and security", 
                 "Ensure sustainable management of water and sanitation", 
                 "Ensure access to cleaner energy sources and address climate change challenges",
@@ -23,17 +42,36 @@ def poc_page():
 
     # Select RIASEC
     st.subheader("A. Know Yourself")
-    with st.form(key='form_riasec'):
-        selected_riasec = st.multiselect("Select Your RIASEC:", riasec_options)
-        st.write("Realistic, Investigative, Artistic, Social, Enterprising, Conventional")
-        selected_riasec_str = ""
-        if selected_riasec:
-            selected_riasec_str = ", ".join(selected_riasec)
-            inputs['riasec'] = selected_riasec_str
 
-        if st.form_submit_button(label='Show Matching Job Roles'):
-            st.session_state.job_json = llm.get_riasec(selected_riasec_str)
-    
+    # Create a multi-select box for RIASEC categories
+    selected_riasec = st.multiselect("Select Your RIASEC:", list(riasec_industries.keys()))
+    if selected_riasec:
+        selected_riasec_str = ", ".join(selected_riasec)
+        inputs['riasec'] = selected_riasec_str
+
+    # Collect industries related to selected RIASEC categories
+    related_industries = []
+    for category in selected_riasec:
+        for industry in riasec_industries[category]:
+            related_industries.append(f"{category} - {industry}")
+
+    # Allow user to further select from the related industries
+    selected_industry = st.selectbox("Select Related Industries:", related_industries)
+    if selected_industry:
+        inputs['industry'] = selected_industry.split(' - ', 1)[-1].strip()
+    else:
+        st.write("Select industries from the list above.")
+
+    #with st.form(key='form_riasec'):
+    #    selected_riasec = st.multiselect("Select Your RIASEC:", riasec_options)
+    #    st.write("Realistic, Investigative, Artistic, Social, Enterprising, Conventional")
+    #    selected_riasec_str = ""
+    #    if selected_riasec:
+    #        selected_riasec_str = ", ".join(selected_riasec)
+    #        inputs['riasec'] = selected_riasec_str
+
+    #    if st.form_submit_button(label='Show Matching Job Roles'):
+    #        st.session_state.job_json = llm.get_riasec(selected_riasec_str)
 
     # Select Goal
     st.subheader("B. Discover Your Purpose & Make A Difference")
