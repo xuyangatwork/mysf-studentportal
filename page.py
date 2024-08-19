@@ -33,7 +33,27 @@ goal_options = ["Strengthen sustainable food production and security",
                 "Uphold fairness and justice for all",
                 "Promote inclusivity and support for individuals with disabilities"]
 
+def get_prompt():
+
+    if 'system_prompt_date' not in st.session_state:
+        st.session_state.system_prompt_date = ""
+    if 'system_prompt' not in st.session_state:
+        st.session_state.system_prompt = ""
+
+    # Read prompt from DB
+    conn = sqlit_db.connect_db()
+    system_prompt_db = sqlit_db.read_prompt(conn)
+    if system_prompt_db:
+        st.session_state.system_prompt_date = system_prompt_db[1]
+        st.session_state.system_prompt = system_prompt_db[2]
+    else:
+        st.error("Please go Prompt Engineering and enter System Prompt first.")
+    conn.close()
+
+
 def poc_page():
+
+    get_prompt()
 
     inputs = {}
 
@@ -103,18 +123,7 @@ def poc_page():
 
 def prompt_page():
 
-    if 'system_prompt_date' not in st.session_state:
-        st.session_state.system_prompt_date = ""
-    if 'system_prompt' not in st.session_state:
-        st.session_state.system_prompt = ""
-
-    # Read prompt from DB
-    conn = sqlit_db.connect_db()
-    system_prompt_db = sqlit_db.read_prompt(conn)
-    if system_prompt_db:
-        st.session_state.system_prompt_date = system_prompt_db[1]
-        st.session_state.system_prompt = system_prompt_db[2]
-    conn.close()
+    get_prompt()
 
     with st.form(key='form_prompt'):
         text_input = st.text_area("Enter System Prompt", height=500, value=st.session_state.system_prompt)
