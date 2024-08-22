@@ -1,6 +1,7 @@
 import streamlit as st
 import streamlit_antd_components as sac
 import page
+import welcome
 import sqlit_db
 
 
@@ -15,8 +16,11 @@ def page2():
 
     page.prompt_page()
     
-def page3():
-    st.title("")
+def page0():
+    st.title("Welcome to ECG Tool POC (v0.1)")
+
+    if page.check_password():
+        welcome.welcome_page()
 
 def main():
 
@@ -29,18 +33,20 @@ def main():
     with st.sidebar: #options for sidebar
         st.image("ECG.png")
         selected_menu = sac.menu([
+            sac.MenuItem('Welcome'),
             sac.MenuItem('Prototype'),
-            sac.MenuItem('Prompt Engineering'),
-            #sac.MenuItem('page3', icon='gear')
+            sac.MenuItem('Prompt Engineering')
             ], index=0, format_func='title', open_all=True)
 
     # Display the selected page
     if selected_menu == "Prototype":
-        page1()
+        if page.check_password():
+            page1()
     elif selected_menu == "Prompt Engineering":
-        page2()
-    elif selected_menu == "page3":
-        page3()
+        if page.check_password():
+            page2()
+    elif selected_menu == "Welcome":
+        page0()
 
 if __name__ == "__main__":
 	main()

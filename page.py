@@ -146,3 +146,26 @@ def prompt_page():
     st.write('''Tone (T): Setting the tone ensures the response resonates with the required sentiment.''')
     st.write('''Audience (A): Identifying the intended audience tailors the LLM’s response to be targeted to an audience.''')
     st.write('''Response (R): Providing the response format, like text or json, ensures the LLM outputs, and help build pipelines.''')
+
+
+def check_password():
+    if 'password_correct' not in st.session_state:
+        st.session_state.password_correct = False
+    
+    if st.session_state.password_correct:
+        return True
+
+    # Create a password input field
+    password = st.text_input("Enter password", type="password")
+    
+    # Define the correct password (you can also retrieve this from a secure source)
+    correct_password = st.secrets["PASSWORD"]
+
+    # Check the entered password
+    if password == correct_password:
+        st.session_state.password_correct = True
+        st.success("Password correct! You can now access other pages.")
+        return True
+    elif password:
+        st.error("Incorrect password. Please try again.")
+        return False
