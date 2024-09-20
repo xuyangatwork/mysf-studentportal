@@ -3,7 +3,7 @@ import streamlit as st
    
 def welcome_page():
 
-    st.subheader("This tool is designed to help you analyze and sense making your RIASEC, Career Inspiration and Goals.")
+    st.subheader("This tool is designed to help you analyse and sense making your RIASEC, Career Inspiration and Goals.")
 
     # Custom CSS for icons, containers, fixed height, and footnote
     st.markdown("""
