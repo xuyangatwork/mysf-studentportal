@@ -7,7 +7,7 @@ import sqlit_db
 
 # Define the pages
 def page1():
-    st.title("ECG Proof-Of-Concept (POC)")
+    st.title("ECG Buddy Proof-Of-Concept (POC)")
 
     page.poc_page()
 
@@ -17,7 +17,7 @@ def page2():
     page.prompt_page()
     
 def page0():
-    st.title("Welcome to ECG Tool POC (v0.1)")
+    st.title("Welcome to ECG Buddy POC (v0.1)")
 
     if page.check_password():
         welcome.welcome_page()

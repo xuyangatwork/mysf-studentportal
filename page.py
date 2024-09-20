@@ -108,11 +108,11 @@ def poc_page():
             except json.JSONDecodeError as e:
                 st.error(f"Failed to decode JSON: {e}")
         
-        selected_goal = st.selectbox("Select you goal:", goal_options)
+        selected_goal = st.selectbox("Select your purpose statement:", goal_options)
         if selected_goal:
             selected_goal_str = ", ".join(selected_goal)
             inputs['goal'] = selected_goal_str
-        my_own_goal = st.text_input("I have my own goal ... (optional)")
+        my_own_goal = st.text_input("I have my own purpose statement ... (optional)")
         if my_own_goal:
             inputs['ownGoal'] = my_own_goal
         else:
@@ -146,7 +146,9 @@ def prompt_page():
     st.write('''Tone (T): Setting the tone ensures the response resonates with the required sentiment.''')
     st.write('''Audience (A): Identifying the intended audience tailors the LLM’s response to be targeted to an audience.''')
     st.write('''Response (R): Providing the response format, like text or json, ensures the LLM outputs, and help build pipelines.''')
-
+    
+    st.subheader('System Prompt (Google Doc)')
+    st.write('https://docs.google.com/document/d/153foOpYYHNO_oYcR-RwY1-ceUEyZlkCPrTe2rQnONWU/edit?usp=sharing')
 
 def check_password():
     if 'password_correct' not in st.session_state:
