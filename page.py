@@ -118,7 +118,7 @@ def poc_page():
         else:
             inputs['ownGoal'] = ""
 
-        if st.form_submit_button(label='Check Now'):
+        if st.form_submit_button(label='Let\'s Go'):
             llm.single_openai_call(inputs)
 
 def prompt_page():
