@@ -46,6 +46,7 @@ def single_openai_call(inputs):
 	)
     st.subheader("How to Broaden Your Career Aspirations")  
     st.write_stream(stream)
+    st.write("As you think through your options, remember that there are people around you whom you can turn to for support. Speak to your ECG Counsellors, teachers, parents/guardians and seniors to learn about their perspectives and experiences.")
 
 def get_riasec(inputs):
     client = OpenAI(
